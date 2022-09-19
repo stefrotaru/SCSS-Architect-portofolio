@@ -1,0 +1,224 @@
+/*
+0 - 600px:      Phone
+600 - 900px:    Tablet portrait
+900 - 1200px:   Tablet landscape
+[1200 - 1800] is where our normal styles apply
+1800px + :      Big desktop
+
+$breakpoint arguement choices:
+- phone
+- tab-port
+- tab-land
+- big-desktop
+
+ORDER: Base + typography > general layout + grid > page layout > components
+
+1em = 16px
+*/
+@-webkit-keyframes shadow-drop {
+  0% {
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+  100% {
+    text-shadow: 0 0 18px rgba(0, 0, 0, 0.35); } }
+
+@keyframes shadow-drop {
+  0% {
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0); }
+  100% {
+    text-shadow: 0 0 18px rgba(0, 0, 0, 0.35); } }
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; }
+
+body {
+  font-weight: 400;
+  line-height: 1.6; }
+
+.container {
+  display: grid;
+  grid-template-rows: [header-start] 20vh [header-end intro-start] 60vh [intro-end content-start] 80vh [content-end];
+  grid-template-columns: repeat(10, [col-start] minmax(min-content, 1fr) [col-end]); }
+  @media only screen and (max-width: 62.5em) {
+    .container {
+      grid-template-columns: repeat(8, [col-start] minmax(min-content, 1fr) [col-end]); } }
+  @media only screen and (max-width: 50em) {
+    .container {
+      grid-template-columns: repeat(6, [col-start] minmax(min-content, 1fr) [col-end]); } }
+
+.header {
+  grid-column: col-start 2 / -1;
+  position: relative;
+  grid-row: header-start / header-end;
+  top: 4rem; }
+  .header__logo {
+    position: absolute;
+    font-family: 'Licorice', cursive;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 4.8rem;
+    line-height: 6rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #000000; }
+  .header__checkbox {
+    display: none; }
+  .header__button {
+    position: absolute;
+    right: 10vw;
+    text-align: center;
+    cursor: pointer;
+    z-index: 2000; }
+  .header__background {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background-color: #000;
+    opacity: 0;
+    transition: all 1s; }
+  .header__nav {
+    visibility: hidden;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1500;
+    opacity: 0;
+    width: 0;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+  .header__list {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    list-style: none;
+    text-align: center;
+    width: 100%; }
+  .header__item {
+    margin: 1rem; }
+  .header__link:link, .header__link:visited {
+    display: inline-block;
+    font-size: 3rem;
+    font-weight: 300;
+    padding: 1rem 2rem;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    background-image: linear-gradient(120deg, transparent 0%, transparent 50%, #fff 50%);
+    background-size: 220%;
+    transition: all .4s; }
+    .header__link:link span, .header__link:visited span {
+      margin-right: 1.5rem;
+      display: inline-block; }
+  .header__link:hover, .header__link:active {
+    background-position: 100%;
+    color: #000;
+    transform: translateX(1rem); }
+  .header__checkbox:checked ~ .header__background {
+    display: inline;
+    opacity: 0.9;
+    transform: scale(80); }
+  .header__checkbox:checked ~ .header__nav {
+    visibility: visible;
+    opacity: 1;
+    width: 100%; }
+  .header__icon {
+    position: relative;
+    margin-top: 3.5rem; }
+    .header__icon, .header__icon::before, .header__icon::after {
+      width: 3rem;
+      height: 2px;
+      background-color: #333;
+      display: inline-block; }
+    .header__icon::before, .header__icon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      transition: all .2s; }
+    .header__icon::before {
+      top: -.8rem; }
+    .header__icon::after {
+      top: .8rem; }
+  .header__button:hover .header__icon::before {
+    top: -1rem; }
+  .header__button:hover .header__icon::after {
+    top: 1rem; }
+  .header__checkbox:checked + .header__button .header__icon {
+    background-color: transparent; }
+  .header__checkbox:checked + .header__button .header__icon::before {
+    top: 0;
+    transform: rotate(135deg);
+    background-color: #fff; }
+  .header__checkbox:checked + .header__button .header__icon::after {
+    top: 0;
+    transform: rotate(-135deg);
+    background-color: #fff; }
+
+.content {
+  grid-row: intro-start / content-end;
+  grid-column: col-start 2 / -1; }
+  .content__intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto; }
+    .content__intro-text {
+      margin-top: 10rem;
+      font-family: 'Work Sans';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 8.4rem;
+      line-height: 7.5rem;
+      display: flex;
+      align-items: center;
+      color: #000000; }
+    .content__intro-links {
+      z-index: 1000;
+      list-style-type: none;
+      grid-row: 2/2;
+      display: flex;
+      justify-content: center; }
+    .content__intro-link {
+      margin-top: 2rem;
+      margin-right: 6rem; }
+      .content__intro-link::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: .2rem;
+        bottom: 0;
+        left: 0;
+        background-color: black;
+        visibility: hidden;
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transition: all 0.3s ease-in-out 0s;
+        transition: all 0.3s ease-in-out 0s; }
+      .content__intro-link:hover {
+        transform: scale(1.2);
+        color: black; }
+        .content__intro-link:hover::before {
+          visibility: visible;
+          -webkit-transform: scaleX(1);
+          transform: scaleX(1); }
+    .content__intro-links a {
+      overflow: hidden;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #000; }
+  .content__about {
+    position: relative;
+    grid-row: content-start / content-end;
+    margin-top: 10rem; }
+  .content__projects {
+    height: 2rem;
+    margin-top: 10rem; }
